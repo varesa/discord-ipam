@@ -59,5 +59,10 @@ def me():
     </html>"""
 
 
+@app.route("/")
+def root():
+    return redirect(url_for(".me"))
+
+
 if __name__ == "__main__":
     app.run()
