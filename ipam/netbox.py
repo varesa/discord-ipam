@@ -28,8 +28,8 @@ class ASN:
         ASNs = []
 
         api = nb.ipam.asns
-        for ASN in api.all():
-            ASNs.append(ASN(ASN))
+        for asn in api.all():
+            ASNs.append(ASN(asn))
 
         return ASNs
 
