@@ -51,8 +51,6 @@ class UsernameStore:
         return self.users.get(uid, {"username": None})['username']
 
 
-
-
 class MockDiscord:
     def __init__(self, userid: int):
         self.userid = userid
