@@ -1,7 +1,13 @@
+import json
+from typing import Optional
+
 import flask.app
 import flask_discord
 from flask import redirect, url_for
 from flask_discord import DiscordOAuth2Session, Unauthorized
+from flask_discord.models import User
+
+import config
 
 
 def configure_discord_auth_routes(app: flask.app.Flask) -> flask_discord.DiscordOAuth2Session:
@@ -23,6 +29,30 @@ def configure_discord_auth_routes(app: flask.app.Flask) -> flask_discord.Discord
     return discord
 
 
+class UsernameStore:
+    def __init__(self):
+        try:
+            with open(config.data_path('users.json')) as f:
+                self.users = json.load(f)
+        except FileNotFoundError:
+            self.users = {}
+
+    def write(self):
+        with open(config.data_path('users.json'), 'w') as f:
+            json.dump(self.users, f)
+
+    def update(self, user: User):
+        uid = user.id
+        if self.users.get(uid, {"username": None})['username'] != user.username:
+            self.users[uid] = {"username": user.username}
+            self.write()
+
+    def get_username(self, uid: int) -> Optional[str]:
+        return self.users.get(uid, {"username": None})['username']
+
+
+
+
 class MockDiscord:
     def __init__(self, userid: int):
         self.userid = userid
@@ -35,6 +65,8 @@ class MockDiscord:
 class MockUser:
     def __init__(self, userid: int):
         self.id = userid
+        self.username = "username"
+        self.discriminator = "1234"
 
     def __str__(self):
-        return "username#1234"
+        return f"{self.username}#{self.discriminator}"

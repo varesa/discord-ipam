@@ -1,4 +1,5 @@
 import json
+import os
 
 
 def read():
@@ -16,3 +17,7 @@ def config_app(app):
     app.config["DISCORD_REDIRECT_URI"] = "https://ipam.srvlab.acl.fi/callback"
     app.config["DISCORD_BOT_TOKEN"] = ""
 
+
+def data_path(filename: str) -> str:
+    base = read()['data_directory']
+    return os.path.join(base, filename)

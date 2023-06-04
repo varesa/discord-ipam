@@ -3,7 +3,7 @@ from flask_discord import requires_authorization
 import os
 
 from config import config_app
-from ipam.discord import configure_discord_auth_routes, MockDiscord
+from ipam.discord import configure_discord_auth_routes, MockDiscord, UsernameStore
 from ipam.logic import get_user_ASNs, alloc_new_ASN
 
 app = Flask(__name__)
@@ -14,15 +14,19 @@ else:
     discord = MockDiscord(139452618190618624)
     app.discord = discord
 
+user_store = UsernameStore()
+
 
 @app.route("/")
 @requires_authorization
 def root():
     user = discord.fetch_user()
+    user_store.update(user)
     my_ASNs, other_ASNs = get_user_ASNs(user)
 
     context = {
         "user": user,
+        "user_store": user_store,
         "my_ASNs": my_ASNs,
         "other_ASNs": other_ASNs,
     }
