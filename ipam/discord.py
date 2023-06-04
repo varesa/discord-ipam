@@ -42,13 +42,14 @@ class UsernameStore:
             json.dump(self.users, f)
 
     def update(self, user: User):
-        uid = user.id
+        # JSON only allows strings as keys
+        uid = str(user.id)
         if self.users.get(uid, {"username": None})['username'] != user.username:
             self.users[uid] = {"username": user.username}
             self.write()
 
     def get_username(self, uid: int) -> Optional[str]:
-        return self.users.get(uid, {"username": None})['username']
+        return self.users.get(str(uid), {"username": None})['username']
 
 
 class MockDiscord:
