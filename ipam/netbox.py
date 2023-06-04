@@ -14,7 +14,7 @@ class ASN:
     def __init__(self, netbox_object: pynetbox.core.response.Record):
         self.netbox_object = netbox_object
 
-    def ASN(self) -> int:
+    def asn(self) -> int:
         return self.netbox_object.ASN
 
     def display(self) -> str:
@@ -27,7 +27,7 @@ class ASN:
     def get_all():
         ASNs = []
 
-        api = nb.ipam.ASNs
+        api = nb.ipam.asns
         for ASN in api.all():
             ASNs.append(ASN(ASN))
 
