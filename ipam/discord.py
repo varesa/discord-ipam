@@ -47,10 +47,8 @@ class UsernameStore:
             self.users[uid] = {"username": user.username}
             self.write()
 
-    def get_username(self, uid: int) -> Optional[str]:
-        return self.users.get(uid, {"username": None})['username']
-
-
+    def get_username(self, user: User) -> Optional[str]:
+        return self.users.get(user.id, {"username": None})['username']
 
 
 class MockDiscord:
