@@ -64,7 +64,7 @@
                 {% for asn in other_ASNs %}
                     <tr>
                         <td>{{ asn.display() }}</td>
-                        <td>{{ user_store.get_username(asn.discord_id) }}</td>
+                        <td>{{ user_store.get_username(asn.discord_id()) }}</td>
                         <td>TODO</td>
                     </tr>
                 {% endfor %}
