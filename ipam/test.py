@@ -1,36 +1,18 @@
-import json
 from flask import Flask, redirect, url_for
-from flask_discord import DiscordOAuth2Session, requires_authorization, Unauthorized
+from flask_discord import requires_authorization
 
 from config import config_app
+from ipam.discord import configure_discord_auth_routes
 from netbox import get_asns
 
 app = Flask(__name__)
 config_app(app)
-print("Hello world")
+discord = configure_discord_auth_routes(app)
 
 
-discord = DiscordOAuth2Session(app)
-
-@app.route("/login")
-def login():
-    return discord.create_session(scope=['identify'])
-	
-
-@app.route("/callback")
-def callback():
-    discord.callback()
-    return redirect(url_for(".me"))
-
-
-@app.errorhandler(Unauthorized)
-def redirect_unauthorized(e):
-    return redirect(url_for("login"))
-
-	
-@app.route("/me")
+@app.route("/")
 @requires_authorization
-def me():
+def root():
     user = discord.fetch_user()
 
     my_asns = []
@@ -57,11 +39,6 @@ def me():
             <p>Other ASNs:<br>{other_asns_str}</p>
         </body>
     </html>"""
-
-
-@app.route("/")
-def root():
-    return redirect(url_for(".me"))
 
 
 if __name__ == "__main__":
