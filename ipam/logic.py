@@ -1,15 +1,15 @@
-from netbox import ASN
+from ipam import netbox
 import flask_discord.models
 
 
-def get_user_ASNs(user: flask_discord.models.User) -> (list[ASN], list[ASN]):
+def get_user_ASNs(user: flask_discord.models.User) -> (list[netbox.ASN], list[netbox.ASN]):
     my_ASNs = []
     other_ASNs = []
 
-    for ASN in ASN.get_all():
-        if str(ASN.discord_id()) == str(user.id):
-            my_ASNs.append(ASN)
+    for asn in netbox.ASN.get_all():
+        if str(asn.discord_id()) == str(user.id):
+            my_ASNs.append(asn)
         else:
-            other_ASNs.append(ASN)
+            other_ASNs.append(asn)
 
     return my_ASNs, other_ASNs
