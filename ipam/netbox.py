@@ -23,15 +23,15 @@ class Asn:
     def discord_id(self):
         return self.netbox_object.custom_fields['discord_id']
 
+    @staticmethod
+    def get_all():
+        asns = []
 
-def get_asns():
-    asns = []
+        api = nb.ipam.asns
+        for asn in api.all():
+            asns.append(Asn(asn))
 
-    api = nb.ipam.asns
-    for asn in api.all():
-        asns.append(Asn(asn))
-
-    return asns
+        return asns
 
 
 class Address:
