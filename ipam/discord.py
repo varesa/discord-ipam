@@ -37,4 +37,4 @@ class MockUser:
         self.id = userid
 
     def __str__(self):
-        return "uesrname#1234"
+        return "username#1234"

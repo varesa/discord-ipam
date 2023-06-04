@@ -23,8 +23,8 @@ def root():
 
     context = {
         "user": user,
-        "my_ASNs_str": "<br>".join([ASN.display() for ASN in my_ASNs]),
-        "other_ASNs_str": "<br>".join([ASN.display() for ASN in other_ASNs]),
+        "my_ASNs": my_ASNs,
+        "other_ASNs": other_ASNs,
     }
 
     return render_template("home.html", **context)
