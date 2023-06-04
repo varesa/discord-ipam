@@ -8,14 +8,14 @@ TOKEN = config()['netbox_key']
 nb = pynetbox.api(URL, token=TOKEN)
 
 
-class Asn:
+class ASN:
     netbox_object: pynetbox.core.response.Record = None
 
     def __init__(self, netbox_object: pynetbox.core.response.Record):
         self.netbox_object = netbox_object
 
-    def asn(self) -> int:
-        return self.netbox_object.asn
+    def ASN(self) -> int:
+        return self.netbox_object.ASN
 
     def display(self) -> str:
         return self.netbox_object.display
@@ -25,13 +25,13 @@ class Asn:
 
     @staticmethod
     def get_all():
-        asns = []
+        ASNs = []
 
-        api = nb.ipam.asns
-        for asn in api.all():
-            asns.append(Asn(asn))
+        api = nb.ipam.ASNs
+        for ASN in api.all():
+            ASNs.append(ASN(ASN))
 
-        return asns
+        return ASNs
 
 
 class Address:
