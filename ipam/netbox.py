@@ -1,4 +1,7 @@
+from pyexpat import model
+
 import pynetbox
+from pynetbox.core.endpoint import DetailEndpoint
 
 from config import read as config
 
@@ -33,6 +36,36 @@ class ASN:
 
         return ASNs
 
+
+class ASNRange:
+    netbox_object: pynetbox.core.response.Record = None
+
+    def __init__(self, netbox_object: pynetbox.core.response.Record):
+        self.netbox_object = netbox_object
+
+    def name(self):
+        return self.netbox_object['name']
+
+    def range(self):
+        return self.netbox_object['start'], self.netbox_object['end']
+
+    def allocate_next(self, discord_id: int):
+        available_api = DetailEndpoint(self.netbox_object, "available-asns")
+        return available_api.create({
+            "custom_fields": {
+                "discord_id": str(discord_id)
+            }
+        })
+
+    @staticmethod
+    def get_all():
+        ranges = []
+
+        api = getattr(nb.ipam, 'asn-ranges')
+        for range in api.all():
+            ranges.append(ASNRange(range))
+
+        return ranges
 
 class Address:
     netbox_object: pynetbox.core.response.Record = None
